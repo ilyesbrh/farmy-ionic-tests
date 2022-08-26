@@ -1,0 +1,305 @@
+openapi: 3.0.0
+info:
+  title: FARMY MOBILE ENDPOINTS
+  version: 1.0.0
+  description: FARMY project backend api specification
+  contact:
+    name: ilies.bourouh
+    email: ilies.bourouh@farmy.ai
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.auth/token/refresh/
+servers:
+  - url: https://api-dev.farmy.ai/api/v1/
+    description: ''
+
+paths:
+  /authentication/login:
+    summary: login endpoint
+    post:
+      requestBody:
+        content:
+          application/json: 
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refresh:
+                    type: string
+                  access:
+                    type: string
+          description: ' '
+        '400':
+          description: ' '
+      operationId: login
+  
+  /authentication/auth/token/refresh/:
+    summary: refresh endpoint
+    post:
+      requestBody:
+        content:
+          application/json: 
+            schema:
+              type: object
+              properties:
+                refresh:
+                  type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access:
+                    type: string
+          description: ' '
+        '400':
+          description: ' '
+      operationId: refresh
+  
+  /auth/user/:
+    summary: get user
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    email:
+                        type: string
+                    first_name:
+                        type: string
+                    last_name:
+                        type: string
+                    address:
+                        type: string
+                    phone:
+                        type: string
+                    app_language:
+                        type: string
+                    role:
+                        type: string
+                    domain:
+                        type: string
+                    expertise:
+                        type: array
+                        items:
+                            type: string
+                    country:
+                        type: string
+  
+  /anomalies/:
+    summary: annomalies operationns
+    get:
+      description: get all user anomalies
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    type: object
+                    properties:
+                        id:
+                            format: int32
+                            type: integer
+                        crop_type:
+                            type: string
+                        description:
+                            type: string
+                        is_green_house:
+                            type: boolean
+                        farmer:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                first_name:
+                                    type: string
+                                last_name:
+                                    type: string
+                                address:
+                                    type: string
+                                phone:
+                                    type: string
+                                app_language:
+                                    type: string
+                                role:
+                                    type: string
+                                crop_types:
+                                    type: array
+                                    items:
+                                        type: string
+                                farm_size:
+                                    type: string
+                                country:
+                                    type: string
+                        created:
+                            type: string
+                        updated:
+                            type: string
+                        model_diag:
+                            type: string
+                        model_confidence:
+                            format: int32
+                            type: integer
+                        images:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    image:
+                                        type: object
+                                        properties:
+                                            full_size:
+                                                type: string
+                                            thumbnail:
+                                                type: string
+                        expert_solutions:
+                            type: array
+                            items: {}
+                        satisfaction:
+                            format: int32
+                            type: integer
+                        seen:
+                            type: boolean
+                        comments:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    user:
+                                        type: object
+                                        properties:
+                                            email:
+                                                type: string
+                                            first_name:
+                                                type: string
+                                            last_name:
+                                                type: string
+                                            address:
+                                                type: string
+                                            phone:
+                                                type: string
+                                            app_language:
+                                                type: string
+                                            role:
+                                                type: string
+                                            crop_types:
+                                                type: array
+                                                items:
+                                                    type: string
+                                            farm_size:
+                                                type: string
+                                            country:
+                                                type: string
+                                    content:
+                                        type: string
+                                    created:
+                                        type: string
+                        status:
+                            type: string
+                        latitude:
+                            type: string
+                        longitude:
+                            type: string
+                        temperature:
+                            type: string
+                        humidity:
+                            type: string
+                        wind_speed:
+                            type: string
+    post:
+      description: ''
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                  crop_type:
+                      type: string
+                  description:
+                      type: string
+                  is_green_house:
+                      type: string
+                  image1:
+                      type: string
+                      format: binary
+                  image2:
+                      type: string
+                      format: binary
+                  image3:
+                      type: string
+                      format: binary
+                  image4:
+                      type: string
+                      format: binary
+                  image5:
+                      type: string
+                      format: binary
+      responses:
+        201:
+          description: ''
+        400:
+          description: ''
+        403:
+          description: 'user not farmer'
+  /crop_types/:
+    summary: ''
+    get:
+      description: ''
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: string
+              example: | 
+                [
+                  [
+                      "potato",
+                      "Potato"
+                  ],
+                  [
+                      "tomato",
+                      "Tomato"
+                  ],
+                  [
+                      "chilli_pepper",
+                      "Chilli Pepper"
+                  ]
+                ]
+
+components:
+  schemas: {}
+  securitySchemes:
+    JWT:
+      type: apiKey
+      name: authorization
+      in: header
+security:
+  - JWT: []
